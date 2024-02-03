@@ -23,18 +23,21 @@ func (client *WeatherClient) GetWeather(city string) (*model.WeatherData, error)
 
 	response, err := http.Get(url)
 	if err != nil {
+		fmt.Println(err)
 		return &model.WeatherData{}, err
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
 		return &model.WeatherData{}, fmt.Errorf("invalid city: %s", city)
 	}
+	fmt.Println(url)
 
-	var weatherResponse *model.WeatherData
-	err = json.NewDecoder(response.Body).Decode(weatherResponse)
+	var weatherResponse model.WeatherData
+	err = json.NewDecoder(response.Body).Decode(&weatherResponse)
+	fmt.Println(weatherResponse)
 	if err != nil {
 		return &model.WeatherData{}, err
 	}
 
-	return weatherResponse, nil
+	return &weatherResponse, nil
 }

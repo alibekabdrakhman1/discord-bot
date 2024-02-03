@@ -37,13 +37,13 @@ func (h *Manager) MessageCreate(session *discordgo.Session, message *discordgo.M
 
 	switch args[0] {
 	case "!help":
-		h.Help.Handle(session, message)
+		go h.Help.Handle(session, message)
 	case "!game":
-		h.Game.Handle(session, message)
+		go h.Game.Handle(session, message)
 	case "!poll":
-		h.Poll.Handle(session, message)
+		go h.Poll.Handle(session, message)
 	case "!weather":
-		h.Poll.Handle(session, message)
+		h.Weather.Handle(session, message)
 	case "!translate":
 		go session.ChannelMessageSend(message.ChannelID, "translate is unavailable")
 	}
