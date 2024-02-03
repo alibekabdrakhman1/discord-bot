@@ -20,15 +20,16 @@ var choices = []string{"rock", "scissors", "paper"}
 func (h *GameHandler) Handle(session *discordgo.Session, message *discordgo.MessageCreate) {
 	playerChoice := strings.ToLower(strings.TrimSpace(strings.TrimPrefix(message.Content, "!game ")))
 
-	if isValidChoice(playerChoice) {
-		botChoice := getBotChoice()
-		result := determineWinner(playerChoice, botChoice)
-
-		response := fmt.Sprintf("You chose %s, I chose %s. %s", playerChoice, botChoice, result)
-		session.ChannelMessageSend(message.ChannelID, response)
-	} else {
-		session.ChannelMessageSend(message.ChannelID, "Invalid choice. Use: rock, scissors, paper.")
+	if !isValidChoice(playerChoice) {
+		session.ChannelMessageSend(message.ChannelID, "Invalid choice. Use: `!game rock|scissors|paper`")
+		return
 	}
+
+	botChoice := getBotChoice()
+	result := determineWinner(playerChoice, botChoice)
+
+	response := fmt.Sprintf("You chose %s, I chose %s. %s", playerChoice, botChoice, result)
+	session.ChannelMessageSend(message.ChannelID, response)
 }
 
 func getBotChoice() string {

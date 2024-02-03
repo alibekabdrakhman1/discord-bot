@@ -21,9 +21,9 @@ func (h *WeatherHandler) Handle(session *discordgo.Session, message *discordgo.M
 	args := strings.Split(message.Content, " ")
 
 	if len(args) != 2 {
-		session.ChannelMessageSend(message.ChannelID, "Invalid usage. Use !help for general help or !help <command> for command-specific help.")
+		session.ChannelMessageSend(message.ChannelID, "Invalid usage. Use: `!weather <location>`")
+		return
 	}
-
 	weatherData, err := h.client.GetWeather(args[1])
 	fmt.Println()
 	if err != nil {
